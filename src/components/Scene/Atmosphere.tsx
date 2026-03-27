@@ -3,14 +3,12 @@
 import { useFrame } from "@react-three/fiber";
 import { useRef, useMemo } from "react";
 import * as THREE from "three";
-import { Points, PointMaterial, useScroll } from "@react-three/drei";
+import { Points, PointMaterial } from "@react-three/drei";
 
-export default function Atmosphere() {
-  const scroll = useScroll();
+export default function Atmosphere({ scrollProgress }: { scrollProgress: number }) {
   const pointsRef = useRef<THREE.Points>(null);
   const fogRef = useRef<THREE.Points>(null);
 
-  // Generate rain/particle data
   const particles = useMemo(() => {
     const temp = new Float32Array(5000 * 3);
     for (let i = 0; i < 5000; i++) {
@@ -21,7 +19,6 @@ export default function Atmosphere() {
     return temp;
   }, []);
 
-  // Generate "Spider-Glitch" particles
   const glitchParticles = useMemo(() => {
     const temp = new Float32Array(100 * 3);
     for (let i = 0; i < 100; i++) {
@@ -33,25 +30,22 @@ export default function Atmosphere() {
   }, []);
 
   useFrame((state) => {
-    const s = scroll.offset;
+    const s = scrollProgress;
     const time = state.clock.getElapsedTime();
 
     if (pointsRef.current) {
-      // Particles fall down (Rain effect)
       pointsRef.current.position.y = - (time % 1) * 20;
     }
 
     if (fogRef.current) {
-      // Particles move with scroll and time (Glitch effect)
       fogRef.current.rotation.y = time * 0.1;
       fogRef.current.position.y = s * 10;
-      fogRef.current.visible = s > 0.6; // Only show glitch particles in latter half
+      fogRef.current.visible = s > 0.6; 
     }
   });
 
   return (
     <group>
-      {/* Cinematic Rain */}
       <Points positions={particles} stride={3} ref={pointsRef}>
         <PointMaterial
           transparent
@@ -64,7 +58,6 @@ export default function Atmosphere() {
         />
       </Points>
 
-      {/* Multiverse Glitch Cubes */}
       <Points positions={glitchParticles} stride={3} ref={fogRef}>
         <PointMaterial
           transparent
@@ -77,7 +70,6 @@ export default function Atmosphere() {
         />
       </Points>
       
-      {/* Background Fog Layer */}
       <mesh scale={100}>
         <sphereGeometry args={[1, 32, 32]} />
         <meshBasicMaterial color="#050505" side={THREE.BackSide} />

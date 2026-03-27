@@ -1,26 +1,24 @@
 "use client";
 
-import { useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function Overlay() {
-  const scroll = useScroll();
+export default function Overlay({ scrollProgress }: { scrollProgress: number }) {
   const [activeScene, setActiveScene] = useState(0);
 
-  useFrame(() => {
-    const s = scroll.offset;
+  useEffect(() => {
+    const s = scrollProgress;
     if (s < 0.16) setActiveScene(1);
     else if (s < 0.33) setActiveScene(2);
     else if (s < 0.50) setActiveScene(3);
     else if (s < 0.66) setActiveScene(4);
     else if (s < 0.83) setActiveScene(5);
     else setActiveScene(6);
-  });
+  }, [scrollProgress]);
 
   return (
-    <div style={{ width: "100%", height: "100vh", position: "relative", pointerEvents: "none" }}>
+    <div style={{ width: "100%", height: "100vh", position: "fixed", top: 0, left: 0, pointerEvents: "none", zIndex: 10 }}>
       <AnimatePresence mode="wait">
         <motion.div
           key={activeScene}
@@ -72,12 +70,11 @@ export default function Overlay() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Global Cinematic Elements */}
       <div className="fixed top-12 left-12 opacity-30 text-[10px] tracking-[0.5em] font-mono">
         SYSTEM STATUS: ONLINE / PROTOCOL_V3.8
       </div>
       <div className="fixed bottom-12 right-12 opacity-30 text-[10px] tracking-[0.5em] font-mono">
-        {Math.floor(scroll.offset * 100)}% SYNCED
+        {Math.floor(scrollProgress * 100)}% SYNCED
       </div>
     </div>
   );

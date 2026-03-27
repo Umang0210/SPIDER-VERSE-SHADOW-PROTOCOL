@@ -2,18 +2,14 @@
 
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useRef, useMemo, useEffect } from "react";
-import { useScroll } from "@react-three/drei";
-import gsap from "gsap";
 
-export default function CameraManager() {
-  const scroll = useScroll();
+export default function CameraManager({ scrollProgress }: { scrollProgress: number }) {
   const { camera: rawCamera, mouse } = useThree();
   const camera = rawCamera as THREE.PerspectiveCamera;
   const initialFov = 50;
 
   useFrame((state, delta) => {
-    const s = scroll.offset;
+    const s = scrollProgress;
     const time = state.clock.getElapsedTime();
 
     // Scene definitions for Camera Pathways
@@ -45,13 +41,12 @@ export default function CameraManager() {
       camera.position.y = 5 + Math.cos(actionS * Math.PI) * 5;
       camera.position.z = 10;
       camera.lookAt(0, 2, 0);
-      // "Cinematic Slow Motion" zoom
       camera.fov = initialFov + Math.sin(actionS * Math.PI) * 20;
     }
     // Scene 5: Multiverse Glitch (0.66 to 0.83)
     else if (s < 0.83) {
       const glitchS = (s - 0.66) / 0.17;
-      camera.position.x = (Math.random() - 0.5) * glitchS * 0.5; // Visual camera shake
+      camera.position.x = (Math.random() - 0.5) * glitchS * 0.5; 
       camera.position.z = 8 + (Math.random() - 0.5) * glitchS; 
       camera.rotation.z = Math.sin(time * 10) * glitchS * 0.1;
     }
@@ -63,7 +58,6 @@ export default function CameraManager() {
       camera.fov = THREE.MathUtils.lerp(60, 45, finalS);
     }
 
-    // Parallax Interaction: Mouse influence
     camera.position.x += (mouse.x * 0.5 - camera.position.x * 0.05) * 0.1;
     camera.position.y += (mouse.y * 0.5 - camera.position.y * 0.05) * 0.1;
 

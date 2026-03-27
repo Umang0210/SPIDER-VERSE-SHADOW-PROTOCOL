@@ -1,9 +1,8 @@
 "use client";
 
-import * as THREE from "three";
-import { useScroll } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useRef, useMemo } from "react";
+import { useRef } from "react";
+import * as THREE from "three";
 import City from "./City";
 import Hero from "./Hero";
 import Atmosphere from "./Atmosphere";
@@ -11,10 +10,7 @@ import CameraManager from "./CameraManager";
 import { Bloom, EffectComposer, Noise, Glitch, Vignette } from "@react-three/postprocessing";
 import { GlitchMode } from "postprocessing";
 
-export default function Scene() {
-  const scroll = useScroll();
-  const { viewport } = useThree();
-
+export default function Scene({ scrollProgress }: { scrollProgress: number }) {
   return (
     <>
       <color attach="background" args={["#050505"]} />
@@ -23,12 +19,13 @@ export default function Scene() {
       <ambientLight intensity={0.2} />
       <pointLight position={[10, 10, 10]} intensity={1} color="#00ffff" />
       <pointLight position={[-10, 10, 10]} intensity={1} color="#ff00ff" />
+      <pointLight position={[0, 5, 10]} intensity={2} color="#ffffff" />
 
-      <CameraManager />
+      <CameraManager scrollProgress={scrollProgress} />
       
-      <Hero />
-      <City />
-      <Atmosphere />
+      <Hero scrollProgress={scrollProgress} />
+      <City scrollProgress={scrollProgress} />
+      <Atmosphere scrollProgress={scrollProgress} />
 
       <EffectComposer>
         <Bloom 
@@ -40,20 +37,18 @@ export default function Scene() {
         <Vignette eskil={false} offset={0.1} darkness={1.1} />
         <Noise opacity={0.05} />
         
-        <ScrollControlledGlitch scroll={scroll} />
+        <ScrollControlledGlitch scrollProgress={scrollProgress} />
       </EffectComposer>
     </>
   );
 }
 
-function ScrollControlledGlitch({ scroll }: { scroll: any }) {
+function ScrollControlledGlitch({ scrollProgress }: { scrollProgress: number }) {
   const glitchRef = useRef<any>(null);
   
   useFrame(() => {
-    const s = scroll.offset;
     if (glitchRef.current) {
-      // Activate glitch heavily in Scene 5 (0.66 - 0.83)
-      if (s > 0.65 && s < 0.85) {
+      if (scrollProgress > 0.65 && scrollProgress < 0.85) {
         glitchRef.current.strength = new THREE.Vector2(0.3, 0.3);
         glitchRef.current.active = true;
       } else {
