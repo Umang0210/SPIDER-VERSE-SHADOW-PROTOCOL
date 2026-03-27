@@ -20,7 +20,7 @@ export default function Overlay() {
   });
 
   return (
-    <div style={{ width: "100%", height: "100vh", position: "relative" }}>
+    <div style={{ width: "100%", height: "100vh", position: "relative", pointerEvents: "none" }}>
       <AnimatePresence mode="wait">
         <motion.div
           key={activeScene}
@@ -64,7 +64,7 @@ export default function Overlay() {
               <p className="mt-4 text-gray-400 leading-relaxed uppercase tracking-tighter text-sm">
                 PROTOCOL: SHADOW IS COMPLETE. THE WEB IS YOURS TO EXPLORE.
               </p>
-              <button className="mt-8 px-10 py-4 bg-white text-black font-black uppercase tracking-widest hover:bg-cyan-400 transition-all duration-300">
+              <button className="mt-8 px-10 py-4 bg-white text-black font-black uppercase tracking-widest hover:bg-cyan-400 transition-all duration-300" style={{ pointerEvents: "auto" }}>
                 ENTER THE WEBVERSE
               </button>
             </div>

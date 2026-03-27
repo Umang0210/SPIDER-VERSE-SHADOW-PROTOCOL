@@ -17,7 +17,7 @@ export default function ShadowApp() {
   if (!isMounted) return null;
 
   return (
-    <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "#050505" }}>
+    <main style={{ height: "100vh", width: "100vw", background: "#050505" }}>
       <Canvas
         shadows
         camera={{ position: [0, 0, 10], fov: 50 }}
@@ -32,6 +32,6 @@ export default function ShadowApp() {
           </ScrollControls>
         </Suspense>
       </Canvas>
-    </div>
+    </main>
   );
 }
