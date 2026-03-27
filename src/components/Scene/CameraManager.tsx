@@ -20,9 +20,9 @@ export default function CameraManager() {
     // Scene 1: Space Hook (0.0 to 0.16)
     if (s < 0.16) {
       const zoomS = s / 0.16;
-      camera.position.z = THREE.MathUtils.lerp(30, 10, zoomS);
-      camera.position.y = THREE.MathUtils.lerp(20, 5, zoomS);
-      camera.lookAt(0, 0, 0);
+      camera.position.z = THREE.MathUtils.lerp(18, 10, zoomS);
+      camera.position.y = THREE.MathUtils.lerp(10, 5, zoomS);
+      camera.lookAt(0, 2, 0);
     }
     // Scene 2: City Dive (0.16 to 0.33)
     else if (s < 0.33) {
