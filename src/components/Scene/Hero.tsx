@@ -21,7 +21,7 @@ export default function Hero() {
     if (groupRef.current) {
       // Scene 1-2: Descending into city
       if (s < 0.2) {
-        groupRef.current.position.y = 15 - s * 50;
+        groupRef.current.position.y = 10 - s * 50;
         groupRef.current.rotation.x = Math.PI / 4;
       } 
       // Scene 3: Rooftop land (crouch)
