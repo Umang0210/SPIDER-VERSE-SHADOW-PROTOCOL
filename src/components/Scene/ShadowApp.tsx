@@ -29,7 +29,7 @@ export default function ShadowApp() {
   return (
     <>
       <div style={{ height: "600vh", width: "100%" }} /> {/* Spacer for scrolling */}
-      <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "#050505", zIndex: -1 }}>
+      <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "#050505", zIndex: 0 }}>
         <Canvas
           shadows
           camera={{ position: [0, 0, 10], fov: 50 }}
